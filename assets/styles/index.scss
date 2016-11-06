@@ -1,2 +1,123 @@
 $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 @import '~bootstrap-sass/assets/stylesheets/bootstrap';
+
+html {
+  width: 100%;
+}
+
+body {
+  width: 100%;
+}
+
+.row {
+  margin: 0;
+}
+
+.pad {
+  width: 4em;
+  height: 6em;
+  margin-bottom: 1em;
+  display: inline-block;
+  background: #DADADA;
+  box-shadow: rgba(0, 0, 0, 0.0980392) -6px 6px 0px 0px inset;
+  margin-right: 1em;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+}
+
+.selected {
+  background: #00FF00;
+}
+
+.playing {
+  background: radial-gradient(#FCFCFC, #E3E3E3, #B6B6B6);
+}
+
+.playing.selected {
+  background: radial-gradient(#E6FFE6, #99FF99, #66FF66);
+}
+//
+// // .noselect {
+// //     -webkit-touch-callout: none;
+// //     -webkit-user-select: none;
+// //     -khtml-user-select: none;
+// //     -moz-user-select: none;
+// //     -ms-user-select: none;
+// //     user-select: none;
+// // }
+//
+#play-pause {
+  margin: 10px 10px 0;
+  height: 100%;
+}
+
+.play-tempo {
+  margin-left: 100px;
+}
+//
+// .control {
+//   margin: 10px 0;
+// }
+//
+// .instrument-label {
+//     // display: inline-block;
+//     vertical-align: middle;
+//     line-height: 24%;
+//     // width: 4em;
+//     // height: 6em;
+//     // position: relative;
+//     // top: 1em;
+//     text-align: right;
+//     // margin-right: 0.5em;
+// }
+//
+// .tempo-container {
+//   margin: 0 10px;
+// }
+//
+// #tempo-input {
+//   margin: 0 10px;
+//   line-height: 30px;
+//   border-radius: 3px;
+//   font-size: 25px;
+//   width: 60px;
+//   vertical-align: middle;
+// }
+//
+.tempo-btn {
+  margin: 0 5px;
+  height: 100%;
+}
+//
+@media (max-width: 768px) {
+  .inst-wrapper-kick {
+    padding: 0;
+  }
+  .pad {
+    width: 25%;
+    padding: 0;
+    padding-top: 25%;
+    margin: -2px -4px -2px 0;
+    display: inline-block;
+  }
+
+  .pad-wrapper-kick {
+    padding: 0;
+  }
+
+  .instrument-label {
+    font-size: 23px;
+    writing-mode: vertical-lr;
+    padding-top: 35%;
+    padding-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .play-tempo {
+    margin-left: 0;
+  }
+  .tempo-btn {
+    margin: 0;
+  }
+}
