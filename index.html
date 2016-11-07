@@ -32,8 +32,10 @@
           <span class="tempo-container col-xs-7 col-md-5">
             <label for="tempo-input">Tempo </label>
             <input id="tempo-input" type="number" disabled>
-            <span id="increase-tempo" class="glyphicon glyphicon-plus btn btn-default tempo-btn"></span>
+            <div class='tempo-btn-wrapper'>
             <span id="decrease-tempo" class="glyphicon glyphicon-minus btn btn-default tempo-btn"></span>
+            <span id="increase-tempo" class="glyphicon glyphicon-plus btn btn-default tempo-btn"></span>
+            </div>
           </span>
         </div>
       </header>
@@ -87,91 +89,163 @@
             <div class="instrument-label col-xs-1"><strong>Snare Drum</strong></div>
             <div class="pad-wrapper snare-pads col-xs-11" data-instrument="snare">
 
-            <div class="pad sub_pad_1 column_0"></div>
+              <div class="pad sub_pad_1 column_0"></div>
 
-            <div class="pad sub_pad_1 column_1"></div>
+              <div class="pad sub_pad_1 column_1"></div>
 
-            <div class="pad sub_pad_1 column_2"></div>
+              <div class="pad sub_pad_1 column_2"></div>
 
-            <div class="pad sub_pad_1 column_3"></div>
+              <div class="pad sub_pad_1 column_3"></div>
 
-            <div class="pad sub_pad_2 column_4"></div>
+              <div class="pad sub_pad_2 column_4"></div>
 
-            <div class="pad sub_pad_2 column_5"></div>
+              <div class="pad sub_pad_2 column_5"></div>
 
-            <div class="pad sub_pad_2 column_6"></div>
+              <div class="pad sub_pad_2 column_6"></div>
 
-            <div class="pad sub_pad_2 column_7"></div>
+              <div class="pad sub_pad_2 column_7"></div>
 
-            <div class="pad sub_pad_3 column_8"></div>
+              <div class="pad sub_pad_3 column_8"></div>
 
-            <div class="pad sub_pad_3 column_9"></div>
+              <div class="pad sub_pad_3 column_9"></div>
 
-            <div class="pad sub_pad_3 column_10"></div>
+              <div class="pad sub_pad_3 column_10"></div>
 
-            <div class="pad sub_pad_3 column_11"></div>
+              <div class="pad sub_pad_3 column_11"></div>
 
-            <div class="pad sub_pad_4 column_12"></div>
+              <div class="pad sub_pad_4 column_12"></div>
 
-            <div class="pad sub_pad_4 column_13"></div>
+              <div class="pad sub_pad_4 column_13"></div>
 
-            <div class="pad sub_pad_4 column_14"></div>
+              <div class="pad sub_pad_4 column_14"></div>
 
-            <div class="pad sub_pad_4 column_15"></div>
+              <div class="pad sub_pad_4 column_15"></div>
+            </div>
           </div>
         </div>
-          <!-- <div class="row" data-instrument="snare">
-            <span class="instrument-label"><strong>Snare</strong></span>
-            <div class="pad column_0">
+        <div class='inst-wrapper hihatClose col-xs-12'>
+          <span class='anchor' id="hihatClose"></span>
+          <div class='row'>
+            <div class="instrument-label col-xs-1"><strong>Hihat Closed</strong></div>
+            <div class="pad-wrapper hihat-close-pads col-xs-11" data-instrument="hihatClose">
 
-            </div>
-            <div class="pad column_1">
+              <div class="pad sub_pad_1 column_0"></div>
 
-            </div>
-            <div class="pad column_2">
+              <div class="pad sub_pad_1 column_1"></div>
 
-            </div>
-            <div class="pad column_3">
+              <div class="pad sub_pad_1 column_2"></div>
 
-            </div>
-            <div class="pad column_4">
+              <div class="pad sub_pad_1 column_3"></div>
 
-            </div>
-            <div class="pad column_5">
+              <div class="pad sub_pad_2 column_4"></div>
 
-            </div>
-            <div class="pad column_6">
+              <div class="pad sub_pad_2 column_5"></div>
 
-            </div>
-            <div class="pad column_7">
+              <div class="pad sub_pad_2 column_6"></div>
 
-            </div>
-            <div class="pad column_8">
+              <div class="pad sub_pad_2 column_7"></div>
 
-            </div>
-            <div class="pad column_9">
+              <div class="pad sub_pad_3 column_8"></div>
 
-            </div>
-            <div class="pad column_10">
+              <div class="pad sub_pad_3 column_9"></div>
 
-            </div>
-            <div class="pad column_11">
+              <div class="pad sub_pad_3 column_10"></div>
 
-            </div>
-            <div class="pad column_12">
+              <div class="pad sub_pad_3 column_11"></div>
 
-            </div>
-            <div class="pad column_13">
+              <div class="pad sub_pad_4 column_12"></div>
 
-            </div>
-            <div class="pad column_14">
+              <div class="pad sub_pad_4 column_13"></div>
 
-            </div>
-            <div class="pad column_15">
+              <div class="pad sub_pad_4 column_14"></div>
 
+              <div class="pad sub_pad_4 column_15"></div>
             </div>
           </div>
-          <div class="row" data-instrument="hihatClose">
+        </div>
+        <div class='inst-wrapper hihatOpen col-xs-12'>
+          <span class='anchor' id="hihatOpen"></span>
+          <div class='row'>
+            <div class="instrument-label col-xs-1"><strong>Hihat Open</strong></div>
+            <div class="pad-wrapper hihat-open-pads col-xs-11" data-instrument="hihatOpen">
+
+              <div class="pad sub_pad_1 column_0"></div>
+
+              <div class="pad sub_pad_1 column_1"></div>
+
+              <div class="pad sub_pad_1 column_2"></div>
+
+              <div class="pad sub_pad_1 column_3"></div>
+
+              <div class="pad sub_pad_2 column_4"></div>
+
+              <div class="pad sub_pad_2 column_5"></div>
+
+              <div class="pad sub_pad_2 column_6"></div>
+
+              <div class="pad sub_pad_2 column_7"></div>
+
+              <div class="pad sub_pad_3 column_8"></div>
+
+              <div class="pad sub_pad_3 column_9"></div>
+
+              <div class="pad sub_pad_3 column_10"></div>
+
+              <div class="pad sub_pad_3 column_11"></div>
+
+              <div class="pad sub_pad_4 column_12"></div>
+
+              <div class="pad sub_pad_4 column_13"></div>
+
+              <div class="pad sub_pad_4 column_14"></div>
+
+              <div class="pad sub_pad_4 column_15"></div>
+            </div>
+          </div>
+        </div>
+        <div class='inst-wrapper clap col-xs-12'>
+          <span class='anchor' id="clap"></span>
+          <div class='row'>
+            <div class="instrument-label col-xs-1"><strong>Clap</strong></div>
+            <div class="pad-wrapper clap-pads col-xs-11" data-instrument="clap">
+
+              <div class="pad sub_pad_1 column_0"></div>
+
+              <div class="pad sub_pad_1 column_1"></div>
+
+              <div class="pad sub_pad_1 column_2"></div>
+
+              <div class="pad sub_pad_1 column_3"></div>
+
+              <div class="pad sub_pad_2 column_4"></div>
+
+              <div class="pad sub_pad_2 column_5"></div>
+
+              <div class="pad sub_pad_2 column_6"></div>
+
+              <div class="pad sub_pad_2 column_7"></div>
+
+              <div class="pad sub_pad_3 column_8"></div>
+
+              <div class="pad sub_pad_3 column_9"></div>
+
+              <div class="pad sub_pad_3 column_10"></div>
+
+              <div class="pad sub_pad_3 column_11"></div>
+
+              <div class="pad sub_pad_4 column_12"></div>
+
+              <div class="pad sub_pad_4 column_13"></div>
+
+              <div class="pad sub_pad_4 column_14"></div>
+
+              <div class="pad sub_pad_4 column_15"></div>
+            </div>
+          </div>
+        </div>
+
+
+          <!--<div class="row" data-instrument="hihatClose">
             <span class="instrument-label"><strong>Hi-Hat</strong></span>
             <div class="pad column_0">
 
@@ -222,7 +296,7 @@
 
             </div>
           </div> -->
-        </div>
+
 
         <!--<div class="row">
           <div class="filter-controls col-md-4">
@@ -245,6 +319,5 @@
           </div>
         </div>-->
         </div>
-      </div>
     </body>
 </html>

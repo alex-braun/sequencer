@@ -383,7 +383,6 @@ function drawPlayhead(xindex) {
 
 function schedule() {
   let currentTime = context.currentTime;
-
   // The sequence starts at startTime, so normalize currentTime so that it's 0 at the start of the sequence.
   currentTime -= startTime;
 
@@ -402,6 +401,12 @@ function schedule() {
             break;
           case "hihatClose":
             playNote(currentKit.hihatCloseBuffer, contextPlayTime);
+            break;
+          case "hihatOpen":
+            playNote(currentKit.hihatOpenBuffer, contextPlayTime);
+            break;
+          case "clap":
+            playNote(currentKit.clapBuffer, contextPlayTime);
             break;
         }
           //play the buffer
