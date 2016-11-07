@@ -3,39 +3,84 @@ $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 
 html {
   width: 100%;
+  height: 100%;
+}
+
+h1, strong, label {
+  color: #D9D9D9;
 }
 
 body {
   width: 100%;
+  height: 100%;
+  background-color: #000000;
+}
+
+.sequencer {
+  background-color: #161715;
+  height: 100%;
+  padding-top: 15px;
 }
 
 .row {
   margin: 0;
+  vertical-align: middle;
 }
 
 .pad {
-  width: 4em;
-  height: 6em;
-  margin-bottom: 1em;
+  width: 5.71%;
+  padding-top: 5.71%;
   display: inline-block;
-  background: #DADADA;
-  box-shadow: rgba(0, 0, 0, 0.0980392) -6px 6px 0px 0px inset;
-  margin-right: 1em;
+  background: #BFBFBF;
+  // box-shadow: rgba(0, 0, 0, 0.0980392) -6px 6px 0px 0px inset;
+  box-shadow: rgba(0, 0, 0, 0.09) -6px -5px 1px 1px inset;
   cursor: pointer;
   margin: 0;
-  padding: 0;
+}
+
+.sub_pad_1 {
+  border: 3px solid transparent;
+  -moz-border-image: -moz-linear-gradient(top, #cd67fc 0%, #9731c2  100%);
+  -webkit-border-image: -webkit-linear-gradient(top, #cd67fc 0%, #9731c2 100%);
+  border-image: linear-gradient(to bottom, #cd67fc 0%, #9731c2 100%);
+  border-image-slice: 1;
+}
+
+.sub_pad_2 {
+  border: 3px solid transparent;
+  -moz-border-image: -moz-linear-gradient(top, #73fc60 0%, #1eb922 100%);
+  -webkit-border-image: -webkit-linear-gradient(top, #73fc60 0%, #1eb922 100%);
+  border-image: linear-gradient(to bottom, #73fc60 0%, #1eb922 100%);
+  border-image-slice: 1;
+}
+
+.sub_pad_3 {
+  border: 3px solid transparent;
+  -moz-border-image: -moz-linear-gradient(top, #45b2fb 0%, #167bd9 100%);
+  -webkit-border-image: -webkit-linear-gradient(top, #45b2fb 0%, #167bd9 100%);
+  border-image: linear-gradient(to bottom, #45b2fb 0%, #167bd9 100%);
+  border-image-slice: 1;
+}
+
+.sub_pad_4 {
+  border: 3px solid transparent;
+  -moz-border-image: -moz-linear-gradient(top, #fc434e 0%, #de0f1c 100%);
+  -webkit-border-image: -webkit-linear-gradient(top, #fc434e 0%, #de0f1c 100%);
+  border-image: linear-gradient(to bottom, #fc434e 0%, #de0f1c 100%);
+  border-image-slice: 1;
 }
 
 .selected {
-  background: #00FF00;
+  // background: #00FF00;
+  background: radial-gradient(#E0E0E0, #FFBB2F, #C76C00);
 }
 
 .playing {
-  background: radial-gradient(#FCFCFC, #E3E3E3, #B6B6B6);
+  background: radial-gradient(#FFFFFF, #F2F2F2, #E0E0E0);
 }
 
 .playing.selected {
-  background: radial-gradient(#E6FFE6, #99FF99, #66FF66);
+  background: radial-gradient(#E6FFE6, #00FF10, #16C200);
 }
 //
 // // .noselect {
@@ -55,22 +100,32 @@ body {
 .play-tempo {
   margin-left: 100px;
 }
+.inst-wrapper-kick {
+  padding: 0;
+}
+.pad-wrapper-kick {
+  // background-color: #2B2B2B;
+  // top: 20px;
+  padding: 0;
+  // margin-top: 20px;
+}
 //
 // .control {
 //   margin: 10px 0;
 // }
-//
-// .instrument-label {
-//     // display: inline-block;
-//     vertical-align: middle;
-//     line-height: 24%;
-//     // width: 4em;
-//     // height: 6em;
-//     // position: relative;
-//     // top: 1em;
-//     text-align: right;
-//     // margin-right: 0.5em;
-// }
+
+.instrument-label {
+  display: inline-block;
+  vertical-align: middle;
+  padding-top: 1.71%;
+  line-height: 100%;
+  // width: 4em;
+  // height: 6em;
+  // position: relative;
+  // top: 1em;
+  // text-align: right;
+  // margin-right: 0.5em;
+}
 //
 // .tempo-container {
 //   margin: 0 10px;
@@ -91,19 +146,13 @@ body {
 }
 //
 @media (max-width: 768px) {
-  .inst-wrapper-kick {
-    padding: 0;
-  }
+
   .pad {
     width: 25%;
     padding: 0;
     padding-top: 25%;
     margin: -2px -4px -2px 0;
     display: inline-block;
-  }
-
-  .pad-wrapper-kick {
-    padding: 0;
   }
 
   .instrument-label {
