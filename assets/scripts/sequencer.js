@@ -4,196 +4,235 @@
 //CREATE THE AUDIO BUFFER
 let context = new window.AudioContext() || new window.webkitAudioContext();
 
-let NUM_INSTRUMENTS = 2;
-
-function Kit(name) {
-  this.AUDIO_PATH = "assets/audio/";
-  this.name = name;
-
-  this.kickBuffer = null;
-  this.snareBuffer = null;
-  this.hihatCloseBuffer = null;
-  this.hihatOpenBuffer = null;
-  this.clapBuffer = null;
-
-  this.startedLoading = false;
-  this.isLoaded = false;
-  this.instrumentLoadCount = 0;
-}
-
-Kit.prototype.pathName = function() {
-  return this.AUDIO_PATH + this.name + "/";
-};
-
-Kit.prototype.load = function() {
-  if (this.startedLoading) {
-    return;
-  }
-
-  this.startedLoading = true;
-
-  let pathName = this.pathName();
-
-  //don't want to have set number of instruments, or whatever
-  let kickPath = pathName + "kick.wav";
-  let snarePath = pathName + "snare.wav";
-  let hihatClosePath = pathName + "hihatClose.wav";
-  let hihatOpenPath = pathName + "hihatOpen.wav";
-  let clapPath = pathName + "clap.wav";
-
-  this.loadSample(kickPath, "kick");
-  this.loadSample(snarePath, "snare");
-  this.loadSample(hihatClosePath, "hihatClose");
-  this.loadSample(hihatOpenPath, "hihatOpen");
-  this.loadSample(clapPath, "clap");
-};
-
-
-//this should definitely be part of a sample class, pass in kit or st
-//if we have the name of a sample type, then we can do metaprogramming awesomeness.
-Kit.prototype.loadSample = function(url, instrumentName) {
-  //need 2 load asynchronously
-  let request = new XMLHttpRequest();
-  request.open("GET", url, true);
-  request.responseType = "arraybuffer";
-
-  let kit = this;
-
-  request.onload = function() {
-    context.decodeAudioData(
-      request.response,
-      function(buffer) {
-        switch (instrumentName) {
-          case "kick":
-            kit.kickBuffer = buffer;
-            break;
-          case "snare":
-            kit.snareBuffer = buffer;
-            break;
-          case "hihatClose":
-            kit.hihatCloseBuffer = buffer;
-            break;
-          case "hihatOpen":
-            kit.hihatOpenBuffer = buffer;
-            break;
-          case "clap":
-            kit.clapBuffer = buffer;
-            break;
-        }
-        kit.instrumentLoadCount++;
-        if (kit.instrumentLoadCount === NUM_INSTRUMENTS) {
-          kit.isLoaded = true;
-        }
-      },
-      // function(buffer) {
-      //   console.log("Error decoding drum samples!");
-      // }
-    );
-  };
-  request.send();
-  console.log(request);
-};
-
-// //create a new instance of WAAPI
-// let context = new AudioContext();
-
+// let NUM_INSTRUMENTS = 2;
 //
+// function Kit(name) {
+//   this.AUDIO_PATH = "assets/audio/";
+//   this.name = name;
+//
+//   this.kickBuffer = null;
+//   this.snareBuffer = null;
+//   this.hihatCloseBuffer = null;
+//   this.hihatOpenBuffer = null;
+//   this.clapBuffer = null;
+//
+//   this.startedLoading = false;
+//   this.isLoaded = false;
+//   this.instrumentLoadCount = 0;
+// }
+//
+// Kit.prototype.pathName = function() {
+//   return this.AUDIO_PATH + this.name + "/";
+// };
+//
+// Kit.prototype.load = function() {
+//   if (this.startedLoading) {
+//     return;
+//   }
+//
+//   this.startedLoading = true;
+//
+//   let pathName = this.pathName();
+//
+//   //don't want to have set number of instruments, or whatever
+//   let kickPath = pathName + "kick.wav";
+//   let snarePath = pathName + "snare.wav";
+//   let hihatClosePath = pathName + "hihatClose.wav";
+//   let hihatOpenPath = pathName + "hihatOpen.wav";
+//   let clapPath = pathName + "clap.wav";
+//
+//   this.loadSample(kickPath, "kick");
+//   this.loadSample(snarePath, "snare");
+//   this.loadSample(hihatClosePath, "hihatClose");
+//   this.loadSample(hihatOpenPath, "hihatOpen");
+//   this.loadSample(clapPath, "clap");
+// };
+//
+//
+// //this should definitely be part of a sample class, pass in kit or st
+// //if we have the name of a sample type, then we can do metaprogramming awesomeness.
+// Kit.prototype.loadSample = function(url, instrumentName) {
+//   //need 2 load asynchronously
+//   let request = new XMLHttpRequest();
+//   request.open("GET", url, true);
+//   request.responseType = "arraybuffer";
+//
+//   let kit = this;
+//
+//   request.onload = function() {
+//     context.decodeAudioData(
+//       request.response,
+//       function(buffer) {
+//         switch (instrumentName) {
+//           case "kick":
+//             kit.kickBuffer = buffer;
+//             break;
+//           case "snare":
+//             kit.snareBuffer = buffer;
+//             break;
+//           case "hihatClose":
+//             kit.hihatCloseBuffer = buffer;
+//             break;
+//           case "hihatOpen":
+//             kit.hihatOpenBuffer = buffer;
+//             break;
+//           case "clap":
+//             kit.clapBuffer = buffer;
+//             break;
+//         }
+//         kit.instrumentLoadCount++;
+//         if (kit.instrumentLoadCount === NUM_INSTRUMENTS) {
+//           kit.isLoaded = true;
+//         }
+//       },
+//       // function(buffer) {
+//       //   console.log("Error decoding drum samples!");
+//       // }
+//     );
+//   };
+//   request.send();
+//   console.log(request);
+// };
+//
+// // //create a new instance of WAAPI
+// // let context = new AudioContext();
+//
+// //
 // console.log(context.sampleRate);
 // // → 44100
 // console.log(context.destination.channelCount);
 // // → 2
 
-//
+
+
+
 //bass drum
-// function Kick(context) {
-// 	this.context = context;
-// }
-//
-// Kick.prototype.setup = function() {
-//   this.osc = this.context.createOscillator();
-//   this.gain = this.context.createGain();
-//   this.osc.connect(this.gain);
-//   this.gain.connect(this.context.destination);
-// };
-// Kick.prototype.trigger = function(time) {
-//   this.setup();
-//   this.osc.frequency.setValueAtTime(150, time);
-//   this.osc.type = 'sine';
-//   this.gain.gain.setValueAtTime(1, time);
-//   this.osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.5);
-//   this.gain.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
-//
-//   this.osc.start(time);
-//   this.osc.stop(time + 0.5);
-// };
-//
-// const kick = new Kick(context);
-// const now = context.currentTime;
-// kick.trigger(now);
-// kick.trigger(now + 0.5);
-// kick.trigger(now + 1);
-//
+function Kick(context) {
+	this.context = context;
+}
+
+Kick.prototype.setup = function() {
+  this.osc = this.context.createOscillator();
+  this.gain = this.context.createGain();
+  this.osc.connect(this.gain);
+  this.gain.connect(this.context.destination);
+};
+Kick.prototype.trigger = function(time) {
+  this.setup();
+//jQuery here for frequency level!
+  this.osc.frequency.setValueAtTime(150, time);
+  this.osc.type = 'sine';
+//jQuery here for volume level!
+  this.gain.gain.setValueAtTime(1, time);
+  this.osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.5);
+  this.gain.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
+
+  this.osc.start(time);
+  this.osc.stop(time + 0.5);
+};
+
+const kick = new Kick(context);
+
+
 // //snare
-// function Snare(context) {
-// 	this.context = context;
-// }
-//
-// Snare.prototype.noiseBuffer = function() {
-// 	let bufferSize = this.context.sampleRate;
-// 	let buffer = this.context.createBuffer(1, bufferSize, this.context.sampleRate);
-// 	let output = buffer.getChannelData(0);
-//
-// 	for (let i = 0; i < bufferSize; i++) {
-// 		output[i] = Math.random() * 2 - 1;
-// 	}
-// 	return buffer;
-// };
-//
-// Snare.prototype.setup = function() {
-// 	this.noise = this.context.createBufferSource();
-// 	this.noise.buffer = this.noiseBuffer();
-// 	let noiseFilter = this.context.createBiquadFilter();
-// 	noiseFilter.type = 'highpass';
-// 	noiseFilter.frequency.value = 1000;
-// 	this.noise.connect(noiseFilter);
-//
-//   this.noiseEnvelope = this.context.createGain();
-//   noiseFilter.connect(this.noiseEnvelope);
-//
-//   this.noiseEnvelope.connect(this.context.destination);
-//   this.osc = this.context.createOscillator();
-//   this.osc.type = 'triangle';
-//
-//   this.oscEnvelope = this.context.createGain();
-//   this.osc.connect(this.oscEnvelope);
-//   this.oscEnvelope.connect(this.context.destination);
-// };
-//
-// Snare.prototype.trigger = function(time) {
-// 	this.setup();
-//
-// 	this.noiseEnvelope.gain.setValueAtTime(1, time);
-// 	this.noiseEnvelope.gain.exponentialRampToValueAtTime(0.01, time + 0.2);
-// 	this.noise.start(time);
-//
-// 	this.osc.frequency.setValueAtTime(100, time);
-// 	this.oscEnvelope.gain.setValueAtTime(0.7, time);
-// 	this.oscEnvelope.gain.exponentialRampToValueAtTime(0.01, time + 0.1);
-// 	this.osc.start(time);
-//
-// 	this.osc.stop(time + 0.2);
-// 	this.noise.stop(time + 0.2);
-// };
-//
-// const snare = new Snare(context);
-// // const now = context.currentTime;
-// snare.trigger(now);
-// snare.trigger(now + 0.5);
-// snare.trigger(now + 1);
+function Snare(context) {
+	this.context = context;
+}
+
+Snare.prototype.noiseBuffer = function() {
+	let bufferSize = this.context.sampleRate;
+	let buffer = this.context.createBuffer(1, bufferSize, this.context.sampleRate);
+	let output = buffer.getChannelData(0);
+
+	for (let i = 0; i < bufferSize; i++) {
+		output[i] = Math.random() * 2 - 1;
+	}
+	return buffer;
+};
+
+Snare.prototype.setup = function() {
+	this.noise = this.context.createBufferSource();
+	this.noise.buffer = this.noiseBuffer();
+	let noiseFilter = this.context.createBiquadFilter();
+	noiseFilter.type = 'highpass';
+	noiseFilter.frequency.value = 1000;
+	this.noise.connect(noiseFilter);
+
+  this.noiseEnvelope = this.context.createGain();
+  noiseFilter.connect(this.noiseEnvelope);
+
+  this.noiseEnvelope.connect(this.context.destination);
+  this.osc = this.context.createOscillator();
+  this.osc.type = 'triangle';
+
+  this.oscEnvelope = this.context.createGain();
+  this.osc.connect(this.oscEnvelope);
+  this.oscEnvelope.connect(this.context.destination);
+};
+
+Snare.prototype.trigger = function(time) {
+	this.setup();
+//jQuery snare white noise volume
+	this.noiseEnvelope.gain.setValueAtTime(1, time);
+	this.noiseEnvelope.gain.exponentialRampToValueAtTime(0.01, time + 0.2);
+	this.noise.start(time);
+
+//jQuery snare drum pitch
+	this.osc.frequency.setValueAtTime(100, time);
+//jQuery snare drum volume
+	this.oscEnvelope.gain.setValueAtTime(0.7, time);
+	this.oscEnvelope.gain.exponentialRampToValueAtTime(0.01, time + 0.1);
+
+  this.osc.start(time);
+	this.osc.stop(time + 0.2);
+	this.noise.stop(time + 0.2);
+};
+
+const snare = new Snare(context);
 
 
 
-// let context;
+//hihat synthesis
+function HiHatClose(context) {
+  this.context = context;
+}
+
+HiHatClose.prototype.setup = function() {
+  this.osc = context.createOscillator();
+
+  let bandpass = this.context.createBiquadFilter();
+  bandpass.type = "bandpass";
+  bandpass.frequency.value = 10000;
+  this.osc.connect(bandpass);
+
+  let highpass = this.context.createBiquadFilter();
+  highpass.type = "highpass";
+  highpass.frequency.value = 7000;
+  bandpass.connect(highpass);
+
+  this.gain = this.context.createGain();
+  highpass.connect(this.gain);
+  this.gain.connect(this.context.destination);
+};
+
+HiHatClose.prototype.trigger = function(time) {
+  let fundamental = 40;
+  let ratios = [2, 3, 4.16, 5.43, 6.79, 8.21];
+  for (let i = 0; i < ratios.length; i++) {
+
+    this.setup();
+    this.osc.type = 'square';
+//jQuery here for volume
+    this.gain.gain.setValueAtTime(1, time);
+//jQuery fundamental is the frequency fundamental of the hihat
+    this.osc.frequency.value = fundamental * ratios[i];
+    this.gain.gain.exponentialRampToValueAtTime(0.01, time + 0.05);
+    this.osc.start(time);
+    this.osc.stop(time + 0.05);
+  }
+};
+
+const hihatClose = new HiHatClose(context);
 
 let compressor;
 
@@ -212,7 +251,6 @@ let TEMPO_MAX = 200;
 let TEMPO_MIN = 40;
 let TEMPO_STEP = 4;
 
-// context = new window.AudioContext() || new window.webkitAudioContext();
 
 
 
@@ -331,15 +369,16 @@ function initializeAudioNodes() {
 //   lowPassFilterNode.active = false;
 
 
-function loadKits() {
-  let kit = new Kit('kit');
-  kit.load();
-  currentKit = kit;
-}
+// function loadKits() {
+//   let kit = new Kit('kit');
+//   kit.load();
+//   currentKit = kit;
+// }
 
-function playNote(buffer, noteTime) {
-  let voice = context.createBufferSource();
-  voice.buffer = buffer;
+function playNote(instrument, noteTime) {
+  // let voice = context.createBufferSource();
+  // let voice = context.createBufferSource();
+  // voice.buffer = instrument;
 
   let currentLastNode = masterGainNode;
   // if (lowPassFilterNode.active) {
@@ -351,9 +390,10 @@ function playNote(buffer, noteTime) {
   //   convolver.connect(currentLastNode);
   //   currentLastNode = convolver;
   // }
-
-  voice.connect(currentLastNode);
-  voice.start(noteTime);
+  // instrument.connect(currentLastNode);
+  instrument.trigger(noteTime);
+  // voice.connect(currentLastNode);
+  // voice.start(noteTime);
 }
 
 function advanceNote() {
@@ -394,13 +434,13 @@ function schedule() {
           let instrumentName = $(this).parents().data("instrument");
           switch (instrumentName) {
           case "kick":
-            playNote(currentKit.kickBuffer, contextPlayTime);
+            playNote(kick, contextPlayTime);
             break;
           case "snare":
-            playNote(currentKit.snareBuffer, contextPlayTime);
+            playNote(snare, contextPlayTime);
             break;
           case "hihatClose":
-            playNote(currentKit.hihatCloseBuffer, contextPlayTime);
+            playNote(hihatClose, contextPlayTime);
             break;
           case "hihatOpen":
             playNote(currentKit.hihatOpenBuffer, contextPlayTime);
@@ -460,7 +500,7 @@ function changeTempoListener() {
 }
 
 $(document).ready(function() {
-  loadKits();
+  // loadKits();
   initializeAudioNodes();
   initializeTempo();
   changeTempoListener();
