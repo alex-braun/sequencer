@@ -47,6 +47,9 @@
           <span class='anchor' id="kick"></span>
           <div class='row'>
             <div class="instrument-label col-xs-1"><strong>Kick Drum</strong></div>
+
+            <input class="volume kickVolume" type="range" value="100" min="0" max="100"/>
+
             <div class="pad-wrapper kick-pads col-xs-11" data-instrument="kick">
 
             <div class="pad sub_pad_1 column_0"></div>
@@ -87,6 +90,9 @@
           <span class='anchor' id="snare"></span>
           <div class='row'>
             <div class="instrument-label col-xs-1"><strong>Snare Drum</strong></div>
+
+            <input class="volume snareVolume" type="range" value="100" min="0" max="100"/>
+
             <div class="pad-wrapper snare-pads col-xs-11" data-instrument="snare">
 
               <div class="pad sub_pad_1 column_0"></div>
@@ -127,6 +133,9 @@
           <span class='anchor' id="hihatClose"></span>
           <div class='row'>
             <div class="instrument-label col-xs-1"><strong>Hihat Closed</strong></div>
+
+            <input class="volume hihatCloseVolume" type="range" value="100" min="0" max="100"/>
+
             <div class="pad-wrapper hihat-close-pads col-xs-11" data-instrument="hihatClose">
 
               <div class="pad sub_pad_1 column_0"></div>
@@ -167,6 +176,9 @@
           <span class='anchor' id="hihatOpen"></span>
           <div class='row'>
             <div class="instrument-label col-xs-1"><strong>Hihat Open</strong></div>
+
+            <input class="volume hihatOpenVolume" type="range" value="100" min="0" max="100"/>
+
             <div class="pad-wrapper hihat-open-pads col-xs-11" data-instrument="hihatOpen">
 
               <div class="pad sub_pad_1 column_0"></div>
@@ -207,6 +219,9 @@
           <span class='anchor' id="clap"></span>
           <div class='row'>
             <div class="instrument-label col-xs-1"><strong>Clap</strong></div>
+
+            <input class="volume clapVolume" type="range" value="100" min="0" max="100"/>
+
             <div class="pad-wrapper clap-pads col-xs-11" data-instrument="clap">
 
               <div class="pad sub_pad_1 column_0"></div>
@@ -244,6 +259,8 @@
           </div>
         </div>
 
+
+        <!-- <p class="note">Current value: <span id="currentValue">0</span></p> -->
 
           <!--<div class="row" data-instrument="hihatClose">
             <span class="instrument-label"><strong>Hi-Hat</strong></span>

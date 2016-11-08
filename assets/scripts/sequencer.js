@@ -4,7 +4,13 @@
 //CREATE THE AUDIO BUFFER
 let context = new window.AudioContext() || new window.webkitAudioContext();
 
-//bass drum
+let kickVolume = 0.8;
+let snareVolume = 0.8;
+let hihatCloseVolume = 0.8;
+let hihatOpenVolume = 0.8;
+let clapVolume = 0.8;
+
+//kick drum
 function Kick(context) {
 	this.context = context;
 }
@@ -15,13 +21,15 @@ Kick.prototype.setup = function() {
   this.osc.connect(this.gain);
   this.gain.connect(this.context.destination);
 };
+
 Kick.prototype.trigger = function(time) {
   this.setup();
 //jQuery here for frequency level!
   this.osc.frequency.setValueAtTime(150, time);
   this.osc.type = 'sine';
 //jQuery here for volume level!
-  this.gain.gain.setValueAtTime(1, time);
+  // this.gain.gain.setValueAtTime(0.8, time);
+  this.gain.gain.setValueAtTime(kickVolume, time);
   this.osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.5);
   this.gain.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
 
@@ -30,7 +38,7 @@ Kick.prototype.trigger = function(time) {
 };
 
 
-// //snare
+//snare drum synthesis
 function Snare(context) {
 	this.context = context;
 }
@@ -56,11 +64,10 @@ Snare.prototype.setup = function() {
 
   this.noiseEnvelope = this.context.createGain();
   noiseFilter.connect(this.noiseEnvelope);
-
   this.noiseEnvelope.connect(this.context.destination);
+
   this.osc = this.context.createOscillator();
   this.osc.type = 'triangle';
-
   this.oscEnvelope = this.context.createGain();
   this.osc.connect(this.oscEnvelope);
   this.oscEnvelope.connect(this.context.destination);
@@ -69,23 +76,22 @@ Snare.prototype.setup = function() {
 Snare.prototype.trigger = function(time) {
 	this.setup();
 //jQuery snare white noise volume
-	this.noiseEnvelope.gain.setValueAtTime(1, time);
+	this.noiseEnvelope.gain.setValueAtTime(snareVolume, time);
 	this.noiseEnvelope.gain.exponentialRampToValueAtTime(0.01, time + 0.2);
-	this.noise.start(time);
-
 //jQuery snare drum pitch
 	this.osc.frequency.setValueAtTime(100, time);
 //jQuery snare drum volume
-	this.oscEnvelope.gain.setValueAtTime(0.7, time);
+	this.oscEnvelope.gain.setValueAtTime(snareVolume, time);
 	this.oscEnvelope.gain.exponentialRampToValueAtTime(0.01, time + 0.1);
 
   this.osc.start(time);
 	this.osc.stop(time + 0.2);
+  this.noise.start(time);
 	this.noise.stop(time + 0.2);
 };
 
 
-//hihat synthesis
+//hihat closed synthesis
 function HiHatClose(context) {
   this.context = context;
 }
@@ -116,17 +122,18 @@ HiHatClose.prototype.trigger = function(time) {
     this.setup();
     this.osc.type = 'square';
 //jQuery here for volume
-    this.gain.gain.setValueAtTime(1, time);
+    this.gain.gain.setValueAtTime(hihatCloseVolume, time);
 //jQuery fundamental is the frequency fundamental of the hihat
     this.osc.frequency.value = fundamental * ratios[i];
     this.gain.gain.exponentialRampToValueAtTime(0.01, time + 0.05);
+
     this.osc.start(time);
     this.osc.stop(time + 0.05);
   }
 };
 
 
-//hihat synthesis
+//hihat open synthesis
 function HiHatOpen(context) {
   this.context = context;
 }
@@ -157,12 +164,12 @@ HiHatOpen.prototype.trigger = function(time) {
     this.setup();
     this.osc.type = 'square';
 //jQuery here for volume
-    this.gain.gain.setValueAtTime(1, time);
+    this.gain.gain.setValueAtTime(hihatOpenVolume, time);
 //jQuery fundamental is the frequency fundamental of the hihat
     this.osc.frequency.value = fundamental * ratios[i];
     this.gain.gain.exponentialRampToValueAtTime(0.01, time + 1.5);
     this.osc.start(time);
-    this.osc.stop(time + 0.6);
+    this.osc.stop(time + 0.5);
   }
 };
 
@@ -193,7 +200,6 @@ Clap.prototype.setup = function() {
   this.noise.connect(bandpass);
 
   this.lfo = this.context.createOscillator();
-  // this.lfo.frequency.value = 100;
   this.lfo.type = 'sawtooth';
   let lfopass = this.context.createBiquadFilter();
   lfopass.type = "highpass";
@@ -203,9 +209,7 @@ Clap.prototype.setup = function() {
   this.noiseEnvelope = this.context.createGain();
 
   bandpass.connect(this.noiseEnvelope);
-
   lfopass.connect(this.noiseEnvelope);
-  // this.lfo.connect(this.gain.gain);
 
   this.noiseEnvelope.connect(this.context.destination);
 };
@@ -213,58 +217,20 @@ Clap.prototype.setup = function() {
 Clap.prototype.trigger = function(time) {
     this.setup();
 
-    this.noiseEnvelope.gain.setValueAtTime(0, time);
-    this.noiseEnvelope.gain.exponentialRampToValueAtTime(0.8, time + 0.01);
-    this.noiseEnvelope.gain.exponentialRampToValueAtTime(0.005, time + 0.4);
+    this.noiseEnvelope.gain.setValueAtTime(clapVolume, time);
+    // this.noiseEnvelope.gain.exponentialRampToValueAtTime(clapVolume-0.000001, time + 0.01);
+    this.noiseEnvelope.gain.exponentialRampToValueAtTime(0.001, time + 0.5);
 
     this.lfo.frequency.setValueAtTime(90.9, time);
     this.lfo.frequency.exponentialRampToValueAtTime(0.01, time + 0.5);
+
     this.noise.start(time);
+    this.noise.stop(time + 1);
+
     this.lfo.start(time);
     this.lfo.stop(time + 0.09);
-    this.noise.stop(time + 1);
 };
 
-
-
-//
-// Snare.prototype.setup = function() {
-// 	this.noise = this.context.createBufferSource();
-// 	this.noise.buffer = this.noiseBuffer();
-// 	let noiseFilter = this.context.createBiquadFilter();
-// 	noiseFilter.type = 'highpass';
-// 	noiseFilter.frequency.value = 1000;
-// 	this.noise.connect(noiseFilter);
-//
-//   this.noiseEnvelope = this.context.createGain();
-//   noiseFilter.connect(this.noiseEnvelope);
-//
-//   this.noiseEnvelope.connect(this.context.destination);
-//   this.osc = this.context.createOscillator();
-//   this.osc.type = 'triangle';
-//
-//   this.oscEnvelope = this.context.createGain();
-//   this.osc.connect(this.oscEnvelope);
-//   this.oscEnvelope.connect(this.context.destination);
-// };
-//
-// Snare.prototype.trigger = function(time) {
-// 	this.setup();
-// //jQuery snare white noise volume
-// 	this.noiseEnvelope.gain.setValueAtTime(1, time);
-// 	this.noiseEnvelope.gain.exponentialRampToValueAtTime(0.01, time + 0.2);
-// 	this.noise.start(time);
-//
-// //jQuery snare drum pitch
-// 	this.osc.frequency.setValueAtTime(100, time);
-// //jQuery snare drum volume
-// 	this.oscEnvelope.gain.setValueAtTime(0.7, time);
-// 	this.oscEnvelope.gain.exponentialRampToValueAtTime(0.01, time + 0.1);
-//
-//   this.osc.start(time);
-// 	this.osc.stop(time + 0.2);
-// 	this.noise.stop(time + 0.2);
-// };
 
 
 //PLAYBACK
@@ -283,6 +249,8 @@ let lastDrawTime = -1;
 let LOOP_LENGTH = 16;
 let rhythmIndex = 0;
 let timeoutId;
+
+
 // let testBuffer = null;
 // let currentKit = null;
 let masterGainNode;
@@ -290,78 +258,78 @@ let masterGainNode;
 let tempo = 120;
 let TEMPO_MAX = 200;
 let TEMPO_MIN = 40;
-let TEMPO_STEP = 4;
+let TEMPO_STEP = 1;
 
 
 
 
-// function createLowPassFilterSliders() {
-//   $("#freq-slider").slider({
-//     value: 1,
-//     min: 0,
-//     max: 1,
-//     step: 0.01,
-//     disabled: true,
-//     slide: changeFrequency
-//   });
-//   $("#quality-slider").slider({
-//     value: 0,
-//     min: 0,
-//     max: 1,
-//     step: 0.01,
-//     disabled: true,
-//     slide: changeQuality
-//   });
-// }
+function createLowPassFilterSliders() {
+  $("#freq-slider").slider({
+    value: 1,
+    min: 0,
+    max: 1,
+    step: 0.01,
+    disabled: true,
+    slide: changeFrequency
+  });
+  $("#quality-slider").slider({
+    value: 0,
+    min: 0,
+    max: 1,
+    step: 0.01,
+    disabled: true,
+    slide: changeQuality
+  });
+}
 
-// function lowPassFilterListener() {
-//   $('#lpf').click(function() {
-//     $(this).toggleClass("active");
-//     $(this).blur();
-//     if ($(this).hasClass("btn-default")) {
-//       $(this).removeClass("btn-default");
-//       $(this).addClass("btn-warning");
-//       lowPassFilterNode.active = true;
-//       $("#freq-slider,#quality-slider").slider( "option", "disabled", false );
-//     }
-//     else {
-//       $(this).addClass("btn-default");
-//       $(this).removeClass("btn-warning");
-//       lowPassFilterNode.active = false;
-//       $("#freq-slider,#quality-slider").slider( "option", "disabled", true );
-//     }
-//   })
-// }
+function lowPassFilterListener() {
+  $('#lpf').click(function() {
+    $(this).toggleClass("active");
+    $(this).blur();
+    if ($(this).hasClass("btn-default")) {
+      $(this).removeClass("btn-default");
+      $(this).addClass("btn-warning");
+      lowPassFilterNode.active = true;
+      $("#freq-slider,#quality-slider").slider( "option", "disabled", false );
+    }
+    else {
+      $(this).addClass("btn-default");
+      $(this).removeClass("btn-warning");
+      lowPassFilterNode.active = false;
+      $("#freq-slider,#quality-slider").slider( "option", "disabled", true );
+    }
+  })
+}
 
-// function reverbListener() {
-//   $("#reverb").click(function() {
-//     $(this).toggleClass("active");
-//     $(this).blur();
-//     if ($(this).hasClass("btn-default")) {
-//       $(this).removeClass("btn-default");
-//       $(this).addClass("btn-warning");
-//       convolver.active = true;
-//     }
-//     else {
-//       $(this).addClass("btn-default");
-//       $(this).removeClass("btn-warning");
-//       convolver.active = false;
-//     }
-//   })
-// }
+function reverbListener() {
+  $("#reverb").click(function() {
+    $(this).toggleClass("active");
+    $(this).blur();
+    if ($(this).hasClass("btn-default")) {
+      $(this).removeClass("btn-default");
+      $(this).addClass("btn-warning");
+      convolver.active = true;
+    }
+    else {
+      $(this).addClass("btn-default");
+      $(this).removeClass("btn-warning");
+      convolver.active = false;
+    }
+  })
+}
 
-// function changeFrequency(event, ui) {
-//   let minValue = 40;
-//   let maxValue = context.sampleRate / 2;
-//   let numberOfOctaves = Math.log(maxValue / minValue) / Math.LN2;
-//   let multiplier = Math.pow(2, numberOfOctaves * (ui.value - 1.0));
-//   lowPassFilterNode.frequency.value = maxValue * multiplier;
-// }
+function changeFrequency(event, ui) {
+  let minValue = 40;
+  let maxValue = context.sampleRate / 2;
+  let numberOfOctaves = Math.log(maxValue / minValue) / Math.LN2;
+  let multiplier = Math.pow(2, numberOfOctaves * (ui.value - 1.0));
+  lowPassFilterNode.frequency.value = maxValue * multiplier;
+}
 
-// function changeQuality(event, ui) {
-//   //30 is the quality multiplier, for now.
-//   lowPassFilterNode.Q.value = ui.value * 30;
-// }
+function changeQuality(event, ui) {
+  //30 is the quality multiplier, for now.
+  lowPassFilterNode.Q.value = ui.value * 30;
+}
 
 
 
@@ -431,10 +399,11 @@ function playNote(instrument, noteTime) {
   //   convolver.connect(currentLastNode);
   //   currentLastNode = convolver;
   // }
-  // instrument.connect(currentLastNode);
+  // voice.connect(currentLastNode);
   instrument.trigger(noteTime);
   // voice.connect(currentLastNode);
   // voice.start(noteTime);
+  // voice.trigger(noteTime);
 }
 
 function advanceNote() {
@@ -500,11 +469,36 @@ function schedule() {
       }
       advanceNote();
   }
-
   timeoutId = requestAnimationFrame(schedule);
 }
 
 
+function instVolume() {
+    let selector;
+	$('.volume').change(function(){
+    let drumVolume = (this.value) / 125;
+    selector = $(this).closest('.inst-wrapper').find('span').attr('id');
+    if (selector === 'kick') {
+      kickVolume = drumVolume;
+    }
+    if (selector === 'snare') {
+      snareVolume = drumVolume;
+    }
+    if (selector === 'hihatClose') {
+      hihatCloseVolume = drumVolume;
+    }
+    if (selector === 'hihatOpen') {
+      hihatOpenVolume = drumVolume;
+    }
+    if (selector === 'clap') {
+      clapVolume = drumVolume;
+    }
+	});
+
+	// Trigger the event on load, so
+	// the value field is populated:
+	$('.'+selector+'').change();
+}
 
 
 
@@ -531,17 +525,36 @@ function changeTempoListener() {
       $("#tempo-input").val(tempo);
     }
   });
-
+//id decrease/increase tempo is the button
+//tempo is a GLOBAL VARIABLE!
+//if the tempo is greater than the minimum,
   $("#decrease-tempo").click(function() {
+    console.log(tempo);
     if (tempo > TEMPO_MIN) {
       tempo -= TEMPO_STEP;
       $("#tempo-input").val(tempo);
     }
   });
 }
+//
+// <div class="row col-xs-12 play-tempo">
+//   <button id="play-pause" type="button" class="btn btn-default btn-lg noselect col-xs-4 col-md-6">
+//     <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+//   </button>
+//   <span class="tempo-container col-xs-7 col-md-5">
+//     <label for="tempo-input">Tempo </label>
+//     <input id="tempo-input" type="number" disabled>
+//     <div class='tempo-btn-wrapper'>
+//     <span id="decrease-tempo" class="glyphicon glyphicon-minus btn btn-default tempo-btn"></span>
+//     <span id="increase-tempo" class="glyphicon glyphicon-plus btn btn-default tempo-btn"></span>
+//     </div>
+//   </span>
+// </div>
+
 
 $(document).ready(function() {
   // loadKits();
+  instVolume();
   initializeAudioNodes();
   initializeTempo();
   changeTempoListener();
@@ -566,6 +579,9 @@ const addDrumHandlers = () => {
     $(this).toggleClass("selected");
   });
 
+  // $('#defaultSlider').change(function(){
+  //     instrVolume();
+  // })
 };
 module.exports = {
   addDrumHandlers,
