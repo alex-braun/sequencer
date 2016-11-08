@@ -187,64 +187,47 @@ Clap.prototype.setup = function() {
   this.noise = this.context.createBufferSource();
   this.noise.buffer = this.noiseBuffer();
 
-  this.lfo = this.context.createOscillator();
-  this.lfo.frequency.value = 100;
-  this.lfo.type = 'sawtooth';
-  this.gain = this.context.createGain();
-//this is where the lfo modulates the clap gain levels.
-  this.lfo.connect(this.gain.gain);
-
   let bandpass = this.context.createBiquadFilter();
   bandpass.type = "bandpass";
-  bandpass.frequency.value = 1000;
+  bandpass.frequency.value = 1600;
   this.noise.connect(bandpass);
 
-  bandpass.connect(this.gain);
-  this.gain.connect(this.context.destination);
+  this.lfo = this.context.createOscillator();
+  // this.lfo.frequency.value = 100;
+  this.lfo.type = 'sawtooth';
+  let lfopass = this.context.createBiquadFilter();
+  lfopass.type = "highpass";
+  lfopass.frequency.value = 2000;
+  this.lfo.connect(lfopass);
 
-  // let noiseFilter = this.context.createBiquadFilter();
-  // noiseFilter.type = 'bandpass';
-  // noiseFilter.frequency.value = 1000;
-  // this.noise.connect(noiseFilter);
-  //
-  // this.noiseEnvelope = this.context.createGain();
-  // noiseFilter.connect(this.noiseEnvelope);
-  //
-  // this.noiseEnvelope.connect(this.context.destination);
-  //
-  // this.osc = context.createOscillator();
+  this.noiseEnvelope = this.context.createGain();
 
+  bandpass.connect(this.noiseEnvelope);
+
+  lfopass.connect(this.noiseEnvelope);
+  // this.lfo.connect(this.gain.gain);
+
+  this.noiseEnvelope.connect(this.context.destination);
 };
 
 Clap.prototype.trigger = function(time) {
     this.setup();
-    // this.osc.type = 'square';
-//jQuery here for volume
-    this.gain.gain.setValueAtTime(1, time);
-//jQuery fundamental is the frequency fundamental of the hihat
-    // this.noise.frequency.value = 150;
-    this.gain.gain.exponentialRampToValueAtTime(0.01, time + 1);
+
+    this.noiseEnvelope.gain.setValueAtTime(0, time);
+    this.noiseEnvelope.gain.exponentialRampToValueAtTime(0.8, time + 0.01);
+    this.noiseEnvelope.gain.exponentialRampToValueAtTime(0.005, time + 0.4);
+
+    this.lfo.frequency.setValueAtTime(90.9, time);
+    this.lfo.frequency.exponentialRampToValueAtTime(0.01, time + 0.5);
     this.noise.start(time);
     this.lfo.start(time);
+    this.lfo.stop(time + 0.09);
     this.noise.stop(time + 1);
 };
 
 
 
-
-
-
-// Snare.prototype.noiseBuffer = function() {
-// 	let bufferSize = this.context.sampleRate;
-// 	let buffer = this.context.createBuffer(1, bufferSize, this.context.sampleRate);
-// 	let output = buffer.getChannelData(0);
 //
-// 	for (let i = 0; i < bufferSize; i++) {
-// 		output[i] = Math.random() * 2 - 1;
-// 	}
-// 	return buffer;
-// };
-
 // Snare.prototype.setup = function() {
 // 	this.noise = this.context.createBufferSource();
 // 	this.noise.buffer = this.noiseBuffer();
@@ -284,33 +267,6 @@ Clap.prototype.trigger = function(time) {
 // };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //PLAYBACK
 const kick = new Kick(context);
 const snare = new Snare(context);
@@ -328,7 +284,7 @@ let LOOP_LENGTH = 16;
 let rhythmIndex = 0;
 let timeoutId;
 // let testBuffer = null;
-let currentKit = null;
+// let currentKit = null;
 let masterGainNode;
 // let effectLevelNode;
 let tempo = 120;
@@ -465,7 +421,7 @@ function playNote(instrument, noteTime) {
   // let voice = context.createBufferSource();
   // voice.buffer = instrument;
 
-  let currentLastNode = masterGainNode;
+  // let currentLastNode = masterGainNode;
   // if (lowPassFilterNode.active) {
   //   lowPassFilterNode.connect(currentLastNode);
   //   currentLastNode = lowPassFilterNode;
