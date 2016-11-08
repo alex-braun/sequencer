@@ -191,9 +191,15 @@ Clap.prototype.setup = function() {
   this.lfo.frequency.value = 100;
   this.lfo.type = 'sawtooth';
   this.gain = this.context.createGain();
-
+//this is where the lfo modulates the clap gain levels.
   this.lfo.connect(this.gain.gain);
-  this.noise.connect(this.gain);
+
+  let bandpass = this.context.createBiquadFilter();
+  bandpass.type = "bandpass";
+  bandpass.frequency.value = 1000;
+  this.noise.connect(bandpass);
+
+  bandpass.connect(this.gain);
   this.gain.connect(this.context.destination);
 
   // let noiseFilter = this.context.createBiquadFilter();
@@ -219,7 +225,7 @@ Clap.prototype.trigger = function(time) {
     // this.noise.frequency.value = 150;
     this.gain.gain.exponentialRampToValueAtTime(0.01, time + 1);
     this.noise.start(time);
-    // this.lfo.start(time);
+    this.lfo.start(time);
     this.noise.stop(time + 1);
 };
 
