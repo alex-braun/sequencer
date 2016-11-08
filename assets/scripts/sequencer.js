@@ -216,7 +216,7 @@ HiHatClose.prototype.setup = function() {
 };
 
 HiHatClose.prototype.trigger = function(time) {
-  let fundamental = 40;
+  let fundamental = 39.5;
   let ratios = [2, 3, 4.16, 5.43, 6.79, 8.21];
   for (let i = 0; i < ratios.length; i++) {
 
@@ -233,6 +233,49 @@ HiHatClose.prototype.trigger = function(time) {
 };
 
 const hihatClose = new HiHatClose(context);
+
+
+//hihat synthesis
+function HiHatOpen(context) {
+  this.context = context;
+}
+
+HiHatOpen.prototype.setup = function() {
+  this.osc = context.createOscillator();
+
+  let bandpass = this.context.createBiquadFilter();
+  bandpass.type = "bandpass";
+  bandpass.frequency.value = 10000;
+  this.osc.connect(bandpass);
+
+  let highpass = this.context.createBiquadFilter();
+  highpass.type = "highpass";
+  highpass.frequency.value = 9000;
+  bandpass.connect(highpass);
+
+  this.gain = this.context.createGain();
+  highpass.connect(this.gain);
+  this.gain.connect(this.context.destination);
+};
+
+HiHatOpen.prototype.trigger = function(time) {
+  let fundamental = 39.5;
+  let ratios = [2, 3, 4.16, 5.43, 6.79, 8.21];
+  for (let i = 0; i < ratios.length; i++) {
+
+    this.setup();
+    this.osc.type = 'square';
+//jQuery here for volume
+    this.gain.gain.setValueAtTime(1, time);
+//jQuery fundamental is the frequency fundamental of the hihat
+    this.osc.frequency.value = fundamental * ratios[i];
+    this.gain.gain.exponentialRampToValueAtTime(0.01, time + 1.5);
+    this.osc.start(time);
+    this.osc.stop(time + 0.6);
+  }
+};
+
+const hihatOpen = new HiHatOpen(context);
 
 let compressor;
 
@@ -443,7 +486,7 @@ function schedule() {
             playNote(hihatClose, contextPlayTime);
             break;
           case "hihatOpen":
-            playNote(currentKit.hihatOpenBuffer, contextPlayTime);
+            playNote(hihatOpen, contextPlayTime);
             break;
           case "clap":
             playNote(currentKit.clapBuffer, contextPlayTime);
