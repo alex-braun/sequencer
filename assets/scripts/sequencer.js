@@ -4,11 +4,11 @@
 //CREATE THE AUDIO BUFFER
 let context = new window.AudioContext() || new window.webkitAudioContext();
 
-let kickVolume = 0.8;
-let snareVolume = 0.8;
-let hihatCloseVolume = 0.8;
-let hihatOpenVolume = 0.8;
-let clapVolume = 0.8;
+let kickVolume = 0.7;
+let snareVolume = 0.7;
+let hihatCloseVolume = 0.7;
+let hihatOpenVolume = 0.7;
+let clapVolume = 0.7;
 
 //kick drum synthesis
 function Kick(context) {
@@ -30,12 +30,13 @@ Kick.prototype.trigger = function(time) {
 //jQuery here for volume level!
   // this.gain.gain.setValueAtTime(0.8, time);
   this.gain.gain.setValueAtTime(kickVolume, time);
-  this.osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.5);
-  this.gain.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
+  this.osc.frequency.exponentialRampToValueAtTime(0.01, time + 0.4);
+  this.gain.gain.exponentialRampToValueAtTime(0.01, time + 0.4);
 
   this.osc.start(time);
   // this.osc.stop(time + 0.5);
-  this.gain.gain.setTargetAtTime(0, time, 0.5 + 0.015);
+  this.gain.gain.setTargetAtTime(0, time, 0.4 + 0.015);
+	this.osc.stop(time + 0.42);
 };
 
 
@@ -243,9 +244,6 @@ const clap = new Clap(context);
 const hihatClose = new HiHatClose(context);
 const hihatOpen = new HiHatOpen(context);
 
-
-let compressor;
-
 let noteTime;
 let startTime;
 let lastDrawTime = -1;
@@ -253,108 +251,10 @@ let LOOP_LENGTH = 16;
 let rhythmIndex = 0;
 let timeoutId;
 
-let masterGainNode;
-// let effectLevelNode;
 let tempo = 120;
 let TEMPO_MAX = 200;
 let TEMPO_MIN = 40;
 let TEMPO_STEP = 4;
-
-
-
-// function createLowPassFilterSliders() {
-//   $("#freq-slider").slider({
-//     value: 1,
-//     min: 0,
-//     max: 1,
-//     step: 0.01,
-//     disabled: true,
-//     slide: changeFrequency
-//   });
-//   $("#quality-slider").slider({
-//     value: 0,
-//     min: 0,
-//     max: 1,
-//     step: 0.01,
-//     disabled: true,
-//     slide: changeQuality
-//   });
-// }
-//
-// function lowPassFilterListener() {
-//   $('#lpf').click(function() {
-//     $(this).toggleClass("active");
-//     $(this).blur();
-//     if ($(this).hasClass("btn-default")) {
-//       $(this).removeClass("btn-default");
-//       $(this).addClass("btn-warning");
-//       lowPassFilterNode.active = true;
-//       $("#freq-slider,#quality-slider").slider( "option", "disabled", false );
-//     }
-//     else {
-//       $(this).addClass("btn-default");
-//       $(this).removeClass("btn-warning");
-//       lowPassFilterNode.active = false;
-//       $("#freq-slider,#quality-slider").slider( "option", "disabled", true );
-//     }
-//   })
-// }
-//
-// function reverbListener() {
-//   $("#reverb").click(function() {
-//     $(this).toggleClass("active");
-//     $(this).blur();
-//     if ($(this).hasClass("btn-default")) {
-//       $(this).removeClass("btn-default");
-//       $(this).addClass("btn-warning");
-//       convolver.active = true;
-//     }
-//     else {
-//       $(this).addClass("btn-default");
-//       $(this).removeClass("btn-warning");
-//       convolver.active = false;
-//     }
-//   })
-// }
-//
-// function changeFrequency(event, ui) {
-//   let minValue = 40;
-//   let maxValue = context.sampleRate / 2;
-//   let numberOfOctaves = Math.log(maxValue / minValue) / Math.LN2;
-//   let multiplier = Math.pow(2, numberOfOctaves * (ui.value - 1.0));
-//   lowPassFilterNode.frequency.value = maxValue * multiplier;
-// }
-
-// function changeQuality(event, ui) {
-//   //30 is the quality multiplier, for now.
-//   lowPassFilterNode.Q.value = ui.value * 30;
-// }
-
-
-
-
-
-
-// function initializeAudioNodes() {
-//   let finalMixNode;
-//   if (context.createDynamicsCompressor) {
-//       // Create a dynamics compressor to sweeten the overall mix.
-//       compressor = context.createDynamicsCompressor();
-//       compressor.connect(context.destination);
-//       finalMixNode = compressor;
-//   } else {
-//       // No compressor available in this implementation.
-//       finalMixNode = context.destination;
-//   }
-//
-//
-//   // Create master volume.
-//   // for now, the master volume is static, but in the future there will be a slider
-//   masterGainNode = context.createGain();
-//   masterGainNode.gain.value = 0.7; // reduce overall volume to avoid clipping
-//   masterGainNode.connect(finalMixNode);
-// }
-
 
 function playNote(instrument, noteTime) {
   instrument.trigger(noteTime);
@@ -389,6 +289,7 @@ function schedule() {
   let currentTime = context.currentTime;
   // The sequence starts at startTime, so normalize currentTime so that it's 0 at the start of the sequence.
   currentTime -= startTime;
+	console.log(startTime);
 
   while (noteTime < currentTime + 0.200) {
       let contextPlayTime = noteTime + startTime;
@@ -399,18 +300,23 @@ function schedule() {
           switch (instrumentName) {
           case "kick":
             playNote(kick, contextPlayTime);
+
             break;
           case "snare":
             playNote(snare, contextPlayTime);
+
             break;
           case "hihatClose":
             playNote(hihatClose, contextPlayTime);
+
             break;
           case "hihatOpen":
             playNote(hihatOpen, contextPlayTime);
+
             break;
           case "clap":
             playNote(clap, contextPlayTime);
+						
             break;
         }
         }
@@ -427,7 +333,7 @@ function schedule() {
 function instVolume() {
     let selector;
 	$('.volume').change(function(){
-    let drumVolume = (this.value) / 125;
+    let drumVolume = (this.value) / 200;
     selector = $(this).closest('.inst-wrapper').find('span').attr('id');
     if (selector === 'kick') {
       kickVolume = drumVolume;
@@ -453,7 +359,8 @@ function instVolume() {
 function handlePlay() {
     rhythmIndex = 0;
     noteTime = 0.0;
-    startTime = context.currentTime + 0.005;
+		startTime = context.currentTime + 0.1;
+    // startTime = context.currentTime + 0.005;
     schedule();
 }
 
@@ -487,7 +394,6 @@ function changeTempoListener() {
 
 $(document).ready(function() {
   instVolume();
-  // initializeAudioNodes();
   initializeTempo();
   changeTempoListener();
 });
