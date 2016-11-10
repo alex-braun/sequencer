@@ -10,7 +10,7 @@ let hihatCloseVolume = 0.8;
 let hihatOpenVolume = 0.8;
 let clapVolume = 0.8;
 
-//kick drum
+//kick drum synthesis
 function Kick(context) {
 	this.context = context;
 }
@@ -34,7 +34,8 @@ Kick.prototype.trigger = function(time) {
   this.gain.gain.exponentialRampToValueAtTime(0.01, time + 0.5);
 
   this.osc.start(time);
-  this.osc.stop(time + 0.5);
+  // this.osc.stop(time + 0.5);
+  this.gain.gain.setTargetAtTime(0, time, 0.5 + 0.015);
 };
 
 
@@ -86,6 +87,7 @@ Snare.prototype.trigger = function(time) {
 
   this.osc.start(time);
 	this.osc.stop(time + 0.2);
+
   this.noise.start(time);
 	this.noise.stop(time + 0.2);
 };
@@ -169,7 +171,8 @@ HiHatOpen.prototype.trigger = function(time) {
     this.osc.frequency.value = fundamental * ratios[i];
     this.gain.gain.exponentialRampToValueAtTime(0.01, time + 1.5);
     this.osc.start(time);
-    this.osc.stop(time + 0.5);
+    this.gain.gain.setTargetAtTime(0, time, 0.4 + 0.015);
+    this.osc.stop(time + 0.415);
   }
 };
 
@@ -250,9 +253,6 @@ let LOOP_LENGTH = 16;
 let rhythmIndex = 0;
 let timeoutId;
 
-
-// let testBuffer = null;
-// let currentKit = null;
 let masterGainNode;
 // let effectLevelNode;
 let tempo = 120;
@@ -262,74 +262,73 @@ let TEMPO_STEP = 1;
 
 
 
+// function createLowPassFilterSliders() {
+//   $("#freq-slider").slider({
+//     value: 1,
+//     min: 0,
+//     max: 1,
+//     step: 0.01,
+//     disabled: true,
+//     slide: changeFrequency
+//   });
+//   $("#quality-slider").slider({
+//     value: 0,
+//     min: 0,
+//     max: 1,
+//     step: 0.01,
+//     disabled: true,
+//     slide: changeQuality
+//   });
+// }
+//
+// function lowPassFilterListener() {
+//   $('#lpf').click(function() {
+//     $(this).toggleClass("active");
+//     $(this).blur();
+//     if ($(this).hasClass("btn-default")) {
+//       $(this).removeClass("btn-default");
+//       $(this).addClass("btn-warning");
+//       lowPassFilterNode.active = true;
+//       $("#freq-slider,#quality-slider").slider( "option", "disabled", false );
+//     }
+//     else {
+//       $(this).addClass("btn-default");
+//       $(this).removeClass("btn-warning");
+//       lowPassFilterNode.active = false;
+//       $("#freq-slider,#quality-slider").slider( "option", "disabled", true );
+//     }
+//   })
+// }
+//
+// function reverbListener() {
+//   $("#reverb").click(function() {
+//     $(this).toggleClass("active");
+//     $(this).blur();
+//     if ($(this).hasClass("btn-default")) {
+//       $(this).removeClass("btn-default");
+//       $(this).addClass("btn-warning");
+//       convolver.active = true;
+//     }
+//     else {
+//       $(this).addClass("btn-default");
+//       $(this).removeClass("btn-warning");
+//       convolver.active = false;
+//     }
+//   })
+// }
+//
+// function changeFrequency(event, ui) {
+//   let minValue = 40;
+//   let maxValue = context.sampleRate / 2;
+//   let numberOfOctaves = Math.log(maxValue / minValue) / Math.LN2;
+//   let multiplier = Math.pow(2, numberOfOctaves * (ui.value - 1.0));
+//   lowPassFilterNode.frequency.value = maxValue * multiplier;
+// }
 
-function createLowPassFilterSliders() {
-  $("#freq-slider").slider({
-    value: 1,
-    min: 0,
-    max: 1,
-    step: 0.01,
-    disabled: true,
-    slide: changeFrequency
-  });
-  $("#quality-slider").slider({
-    value: 0,
-    min: 0,
-    max: 1,
-    step: 0.01,
-    disabled: true,
-    slide: changeQuality
-  });
-}
-
-function lowPassFilterListener() {
-  $('#lpf').click(function() {
-    $(this).toggleClass("active");
-    $(this).blur();
-    if ($(this).hasClass("btn-default")) {
-      $(this).removeClass("btn-default");
-      $(this).addClass("btn-warning");
-      lowPassFilterNode.active = true;
-      $("#freq-slider,#quality-slider").slider( "option", "disabled", false );
-    }
-    else {
-      $(this).addClass("btn-default");
-      $(this).removeClass("btn-warning");
-      lowPassFilterNode.active = false;
-      $("#freq-slider,#quality-slider").slider( "option", "disabled", true );
-    }
-  })
-}
-
-function reverbListener() {
-  $("#reverb").click(function() {
-    $(this).toggleClass("active");
-    $(this).blur();
-    if ($(this).hasClass("btn-default")) {
-      $(this).removeClass("btn-default");
-      $(this).addClass("btn-warning");
-      convolver.active = true;
-    }
-    else {
-      $(this).addClass("btn-default");
-      $(this).removeClass("btn-warning");
-      convolver.active = false;
-    }
-  })
-}
-
-function changeFrequency(event, ui) {
-  let minValue = 40;
-  let maxValue = context.sampleRate / 2;
-  let numberOfOctaves = Math.log(maxValue / minValue) / Math.LN2;
-  let multiplier = Math.pow(2, numberOfOctaves * (ui.value - 1.0));
-  lowPassFilterNode.frequency.value = maxValue * multiplier;
-}
-
-function changeQuality(event, ui) {
-  //30 is the quality multiplier, for now.
-  lowPassFilterNode.Q.value = ui.value * 30;
-}
+// function changeQuality(event, ui) {
+//   //30 is the quality multiplier, for now.
+//   lowPassFilterNode.Q.value = ui.value * 30;
+// }
 
 
 
@@ -459,8 +458,6 @@ function schedule() {
             playNote(clap, contextPlayTime);
             break;
         }
-          //play the buffer
-          //store a data element in the row that tells you what instrument
         }
       });
       if (noteTime !== lastDrawTime) {
@@ -472,11 +469,11 @@ function schedule() {
   timeoutId = requestAnimationFrame(schedule);
 }
 
-
 function instVolume() {
     let selector;
 	$('.volume').change(function(){
     let drumVolume = (this.value) / 125;
+    console.log(drumVolume);
     selector = $(this).closest('.inst-wrapper').find('span').attr('id');
     if (selector === 'kick') {
       kickVolume = drumVolume;
@@ -494,13 +491,10 @@ function instVolume() {
       clapVolume = drumVolume;
     }
 	});
-
-	// Trigger the event on load, so
-	// the value field is populated:
+	//change volume level after moving
+  //I would like to change this to immediate volume change.
 	$('.'+selector+'').change();
 }
-
-
 
 function handlePlay() {
     rhythmIndex = 0;
@@ -525,9 +519,8 @@ function changeTempoListener() {
       $("#tempo-input").val(tempo);
     }
   });
-//id decrease/increase tempo is the button
-//tempo is a GLOBAL VARIABLE!
-//if the tempo is greater than the minimum,
+
+
   $("#decrease-tempo").click(function() {
     console.log(tempo);
     if (tempo > TEMPO_MIN) {
@@ -536,24 +529,9 @@ function changeTempoListener() {
     }
   });
 }
-//
-// <div class="row col-xs-12 play-tempo">
-//   <button id="play-pause" type="button" class="btn btn-default btn-lg noselect col-xs-4 col-md-6">
-//     <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-//   </button>
-//   <span class="tempo-container col-xs-7 col-md-5">
-//     <label for="tempo-input">Tempo </label>
-//     <input id="tempo-input" type="number" disabled>
-//     <div class='tempo-btn-wrapper'>
-//     <span id="decrease-tempo" class="glyphicon glyphicon-minus btn btn-default tempo-btn"></span>
-//     <span id="increase-tempo" class="glyphicon glyphicon-plus btn btn-default tempo-btn"></span>
-//     </div>
-//   </span>
-// </div>
 
 
 $(document).ready(function() {
-  // loadKits();
   instVolume();
   initializeAudioNodes();
   initializeTempo();

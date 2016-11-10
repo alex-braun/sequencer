@@ -25,11 +25,13 @@
             <li role="presentation"><a href="#clap">Clap</a></li>
           </ul>
         </div>
+
         <div class="row col-xs-12 play-tempo">
-          <button id="play-pause" type="button" class="btn btn-default btn-lg noselect col-xs-4 col-md-6">
+          <button id="play-pause" type="button" class="btn btn-default btn-lg noselect col-xs-offset-1 col-xs-4 col-sm-4">
+
             <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
           </button>
-          <span class="tempo-container col-xs-7 col-md-5">
+          <span class="tempo-container col-xs-7 col-sm-5">
             <label for="tempo-input">Tempo </label>
             <input id="tempo-input" type="number" disabled>
             <div class='tempo-btn-wrapper'>
@@ -47,8 +49,6 @@
           <span class='anchor' id="kick"></span>
           <div class='row'>
             <div class="instrument-label col-xs-1"><strong>Kick Drum</strong></div>
-
-            <input class="volume kickVolume" type="range" value="100" min="0" max="100"/>
 
             <div class="pad-wrapper kick-pads col-xs-11" data-instrument="kick">
 
@@ -84,6 +84,16 @@
 
             <div class="pad sub_pad_4 column_15"></div>
           </div>
+          <div class='volumeSlider kick-vol-wrapper col-xs-offset-1 col-xs-4 col-sm-2'>
+            <input class="volume kickVolume" type="range" value="100" min="0" max="100"/>
+            <label for="kickVolume">Volume</label>
+          </div>
+
+          <!-- <div class='volumeSlider kick-vol-wrapper col-xs-offset-1 col-xs-4 col-sm-2'>
+            <input class="volume kickVolume" type="range" value="100" min="0" max="100"/>
+            <label for="kickVolume">Volume</label>
+          </div> -->
+
         </div>
       </div>
         <div class='inst-wrapper snare col-xs-12'>
@@ -91,7 +101,7 @@
           <div class='row'>
             <div class="instrument-label col-xs-1"><strong>Snare Drum</strong></div>
 
-            <input class="volume snareVolume" type="range" value="100" min="0" max="100"/>
+            <!-- <input class="volume snareVolume" type="range" value="100" min="0" max="100"/> -->
 
             <div class="pad-wrapper snare-pads col-xs-11" data-instrument="snare">
 
@@ -127,6 +137,15 @@
 
               <div class="pad sub_pad_4 column_15"></div>
             </div>
+            <div class='volumeSlider snare-vol-wrapper col-xs-offset-1 col-xs-4 col-sm-2'>
+              <input class="volume snareVolume" type="range" value="100" min="0" max="100"/>
+              <label for="snareVolume">Volume</label>
+            </div>
+
+            <!-- <div class='volumeSlider snare-vol-wrapper col-xs-offset-1 col-xs-4 col-sm-2'>
+              <input class="volume snareVolume" type="range" value="100" min="0" max="100"/>
+              <label for="snareVolume">Volume</label>
+            </div> -->
           </div>
         </div>
         <div class='inst-wrapper hihatClose col-xs-12'>
@@ -134,7 +153,7 @@
           <div class='row'>
             <div class="instrument-label col-xs-1"><strong>Hihat Closed</strong></div>
 
-            <input class="volume hihatCloseVolume" type="range" value="100" min="0" max="100"/>
+            <!-- <input class="volume hihatCloseVolume" type="range" value="100" min="0" max="100"/> -->
 
             <div class="pad-wrapper hihat-close-pads col-xs-11" data-instrument="hihatClose">
 
@@ -170,6 +189,15 @@
 
               <div class="pad sub_pad_4 column_15"></div>
             </div>
+            <div class='volumeSlider hihatClose-vol-wrapper col-xs-offset-1 col-xs-4 col-sm-2'>
+              <input class="volume hihatCloseVolume" type="range" value="100" min="0" max="100"/>
+              <label for="hihatCloseVolume">Volume</label>
+            </div>
+
+            <!-- <div class='volumeSlider hihatClose-vol-wrapper col-xs-offset-1 col-xs-4 col-sm-2'>
+              <input class="volume hihatCloseVolume" type="range" value="100" min="0" max="100"/>
+              <label for="hihatCloseVolume">Volume</label>
+            </div> -->
           </div>
         </div>
         <div class='inst-wrapper hihatOpen col-xs-12'>
@@ -177,7 +205,7 @@
           <div class='row'>
             <div class="instrument-label col-xs-1"><strong>Hihat Open</strong></div>
 
-            <input class="volume hihatOpenVolume" type="range" value="100" min="0" max="100"/>
+            <!-- <input class="volume hihatOpenVolume" type="range" value="100" min="0" max="100"/> -->
 
             <div class="pad-wrapper hihat-open-pads col-xs-11" data-instrument="hihatOpen">
 
@@ -213,6 +241,15 @@
 
               <div class="pad sub_pad_4 column_15"></div>
             </div>
+            <div class='volumeSlider hihatOpen-vol-wrapper col-xs-offset-1 col-xs-4 col-sm-2'>
+              <input class="volume hihatOpenVolume" type="range" value="100" min="0" max="100"/>
+              <label for="hihatOpenVolume">Volume</label>
+            </div>
+
+            <!-- <div class='volumeSlider hihatOpen-vol-wrapper col-xs-offset-1 col-xs-4 col-sm-2'>
+              <input class="volume hihatOpenVolume" type="range" value="100" min="0" max="100"/>
+              <label for="hihatOpenVolume">Volume</label>
+            </div> -->
           </div>
         </div>
         <div class='inst-wrapper clap col-xs-12'>
@@ -220,7 +257,7 @@
           <div class='row'>
             <div class="instrument-label col-xs-1"><strong>Clap</strong></div>
 
-            <input class="volume clapVolume" type="range" value="100" min="0" max="100"/>
+            <!-- <input class="volume clapVolume" type="range" value="100" min="0" max="100"/> -->
 
             <div class="pad-wrapper clap-pads col-xs-11" data-instrument="clap">
 
@@ -256,6 +293,15 @@
 
               <div class="pad sub_pad_4 column_15"></div>
             </div>
+            <div class='volumeSlider clap-vol-wrapper col-xs-offset-1 col-xs-4 col-sm-2'>
+              <input class="volume clapVolume" type="range" value="100" min="0" max="100"/>
+              <label for="clapVolume">Volume</label>
+            </div>
+
+            <!-- <div class='volumeSlider clap-vol-wrapper col-xs-offset-1 col-xs-4 col-sm-2'>
+              <input class="volume clapVolume" type="range" value="100" min="0" max="100"/>
+              <label for="clapVolume">Volume</label>
+            </div> -->
           </div>
         </div>
 
@@ -335,6 +381,27 @@
             </div>
           </div>
         </div>-->
-        </div>
+
+
+      <!-- </div>
+      <section class="flat">
+    <button>Button</button>
+    <button class="hover">:hover</button>
+    <button class="active">:active</button>
+</section>
+
+<section class="border">
+    <button>Button</button>
+    <button class="hover">:hover</button>
+    <button class="active">:active</button>
+</section>
+
+<section class="gradient">
+    <button>Button</button>
+    <button class="hover">:hover</button>
+    <button class="active">:active</button>
+</section> -->
+
+
     </body>
 </html>
