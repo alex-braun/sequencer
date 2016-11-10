@@ -18,6 +18,7 @@ _SpecRunner.html
 logs
 *.log
 
+
 # Runtime data
 pids
 *.pid
