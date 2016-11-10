@@ -335,74 +335,29 @@ let TEMPO_STEP = 4;
 
 
 
-function initializeAudioNodes() {
-  let finalMixNode;
-  if (context.createDynamicsCompressor) {
-      // Create a dynamics compressor to sweeten the overall mix.
-      compressor = context.createDynamicsCompressor();
-      compressor.connect(context.destination);
-      finalMixNode = compressor;
-  } else {
-      // No compressor available in this implementation.
-      finalMixNode = context.destination;
-  }
-
-
-  // Create master volume.
-  // for now, the master volume is static, but in the future there will be a slider
-  masterGainNode = context.createGain();
-  masterGainNode.gain.value = 0.7; // reduce overall volume to avoid clipping
-  masterGainNode.connect(finalMixNode);
-}
-  //connect all sounds to masterGainNode to play them
-
-  //don't need this for now, no wet dry mix for effects
-  // // Create effect volume.
-  // effectLevelNode = context.createGain();
-  // effectLevelNode.gain.value = 1.0; // effect level slider controls this
-  // effectLevelNode.connect(masterGainNode);
-
-  // Create convolver for effect
-  // convolver = context.createConvolver();
-  // convolver.active = false;
-  // convolver.connect(effectLevelNode);
-
-  //Create Low Pass Filter
-//   lowPassFilterNode = context.createBiquadFilter();
-//   //this is for backwards compatibility, the type used to be an integer
-//   lowPassFilterNode.type = (typeof lowPassFilterNode.type === 'string') ? 'lowpass' : 0; // LOWPASS
-//   //default value is max cutoff, or passing all frequencies
-//   lowPassFilterNode.frequency.value = context.sampleRate / 2;
-//   lowPassFilterNode.connect(masterGainNode);
-//   lowPassFilterNode.active = false;
-
-
-// function loadKits() {
-//   let kit = new Kit('kit');
-//   kit.load();
-//   currentKit = kit;
+// function initializeAudioNodes() {
+//   let finalMixNode;
+//   if (context.createDynamicsCompressor) {
+//       // Create a dynamics compressor to sweeten the overall mix.
+//       compressor = context.createDynamicsCompressor();
+//       compressor.connect(context.destination);
+//       finalMixNode = compressor;
+//   } else {
+//       // No compressor available in this implementation.
+//       finalMixNode = context.destination;
+//   }
+//
+//
+//   // Create master volume.
+//   // for now, the master volume is static, but in the future there will be a slider
+//   masterGainNode = context.createGain();
+//   masterGainNode.gain.value = 0.7; // reduce overall volume to avoid clipping
+//   masterGainNode.connect(finalMixNode);
 // }
 
-function playNote(instrument, noteTime) {
-  // let voice = context.createBufferSource();
-  // let voice = context.createBufferSource();
-  // voice.buffer = instrument;
 
-  // let currentLastNode = masterGainNode;
-  // if (lowPassFilterNode.active) {
-  //   lowPassFilterNode.connect(currentLastNode);
-  //   currentLastNode = lowPassFilterNode;
-  // }
-  // if (convolver.active) {
-  //   convolver.buffer = reverbImpulseResponse.buffer;
-  //   convolver.connect(currentLastNode);
-  //   currentLastNode = convolver;
-  // }
-  // voice.connect(currentLastNode);
+function playNote(instrument, noteTime) {
   instrument.trigger(noteTime);
-  // voice.connect(currentLastNode);
-  // voice.start(noteTime);
-  // voice.trigger(noteTime);
 }
 
 function advanceNote() {
@@ -473,7 +428,6 @@ function instVolume() {
     let selector;
 	$('.volume').change(function(){
     let drumVolume = (this.value) / 125;
-    console.log(drumVolume);
     selector = $(this).closest('.inst-wrapper').find('span').attr('id');
     if (selector === 'kick') {
       kickVolume = drumVolume;
@@ -533,7 +487,7 @@ function changeTempoListener() {
 
 $(document).ready(function() {
   instVolume();
-  initializeAudioNodes();
+  // initializeAudioNodes();
   initializeTempo();
   changeTempoListener();
 });
