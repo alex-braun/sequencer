@@ -258,7 +258,7 @@ let masterGainNode;
 let tempo = 120;
 let TEMPO_MAX = 200;
 let TEMPO_MIN = 40;
-let TEMPO_STEP = 1;
+let TEMPO_STEP = 4;
 
 
 

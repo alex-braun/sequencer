@@ -270,9 +270,16 @@ input[type=range]:focus::-ms-fill-upper {
   // padding-top: 5px;
 }
 
+.row {
+  overflow: hidden;
+}
+
 .instrument-label {
   display: inline-block;
+  // position: absolute;
   vertical-align: middle;
+  // bottom: 0;
+  padding-bottom: 3%;
   padding-top: 1.49%;
   line-height: 100%;
   // width: 4em;
