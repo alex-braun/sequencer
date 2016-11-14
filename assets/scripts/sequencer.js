@@ -382,7 +382,6 @@ function changeTempoListener() {
 
 
   $("#decrease-tempo").click(function() {
-    console.log(tempo);
     if (tempo > TEMPO_MIN) {
       tempo -= TEMPO_STEP;
       $("#tempo-input").val(tempo);
@@ -415,11 +414,8 @@ const addDrumHandlers = () => {
   $('.pad').click(function() {
     $(this).toggleClass("selected");
   });
-
-  // $('#defaultSlider').change(function(){
-  //     instrVolume();
-  // })
 };
+
 module.exports = {
   addDrumHandlers,
 };
