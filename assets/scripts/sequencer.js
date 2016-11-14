@@ -4,11 +4,11 @@
 //CREATE THE AUDIO BUFFER
 let context = new window.AudioContext() || new window.webkitAudioContext();
 
-let kickVolume = 0.7;
-let snareVolume = 0.7;
-let hihatCloseVolume = 0.7;
-let hihatOpenVolume = 0.7;
-let clapVolume = 0.7;
+let kickVolume = 0.5;
+let snareVolume = 0.5;
+let hihatCloseVolume = 0.5;
+let hihatOpenVolume = 0.5;
+let clapVolume = 0.5;
 
 //kick drum synthesis
 function Kick(context) {
@@ -46,7 +46,7 @@ function Snare(context) {
 }
 
 Snare.prototype.noiseBuffer = function() {
-	let bufferSize = this.context.sampleRate;
+	let bufferSize = this.context.sampleRate / 2;
 	let buffer = this.context.createBuffer(1, bufferSize, this.context.sampleRate);
 	let output = buffer.getChannelData(0);
 
@@ -289,7 +289,6 @@ function schedule() {
   let currentTime = context.currentTime;
   // The sequence starts at startTime, so normalize currentTime so that it's 0 at the start of the sequence.
   currentTime -= startTime;
-	console.log(startTime);
 
   while (noteTime < currentTime + 0.200) {
       let contextPlayTime = noteTime + startTime;
@@ -316,7 +315,7 @@ function schedule() {
             break;
           case "clap":
             playNote(clap, contextPlayTime);
-						
+
             break;
         }
         }
