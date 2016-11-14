@@ -1,6 +1,7 @@
 
 
 # drum sequencer
+Please check out the app at: https://alex-braun.github.io/sequencer/
 
 This is a drum sequencer using an implementation of the Web Audio API.  No audio
 files are used. All of the sounds are instead created using the API's oscillators,
